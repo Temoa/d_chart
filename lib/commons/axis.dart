@@ -20,6 +20,9 @@ class DomainAxis extends ChartAxis {
   /// styling for domain line
   final LineStyle lineStyle;
 
+  /// styling for grid line
+  final LineStyle gridLineStyle;
+
   /// styling for domain label
   final LabelStyle labelStyle;
 
@@ -68,6 +71,7 @@ class DomainAxis extends ChartAxis {
   const DomainAxis({
     this.showLine = true,
     this.lineStyle = const LineStyle(),
+    this.gridLineStyle = const LineStyle(),
     this.labelStyle = const LabelStyle(),
     this.gapAxisToLabel = 5,
     this.labelAnchor = LabelAnchor.centered,
@@ -89,6 +93,9 @@ class MeasureAxis extends ChartAxis {
 
   /// styling for domain line
   final LineStyle lineStyle;
+
+  /// styling for grid line
+  final LineStyle gridLineStyle;
 
   /// styling for domain label
   final LabelStyle labelStyle;
@@ -120,6 +127,7 @@ class MeasureAxis extends ChartAxis {
   const MeasureAxis({
     this.showLine = false,
     this.lineStyle = const LineStyle(),
+    this.gridLineStyle = const LineStyle(),
     this.labelStyle = const LabelStyle(),
     this.gapAxisToLabel = 5,
     this.labelAnchor = LabelAnchor.centered,
