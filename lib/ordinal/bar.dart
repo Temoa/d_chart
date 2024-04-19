@@ -191,7 +191,7 @@ class DChartBarO extends StatelessWidget {
                       labelAnchor:
                           MethodCommon.tickLabelAnchor(domainAxis?.labelAnchor),
                       tickLengthPx: domainAxis?.thickLength,
-                      lineStyle: domainAxis?.lineStyle.getRender(),
+                      lineStyle: domainAxis?.gridLineStyle.getRender(),
                     ),
               showAxisLine: domainAxis?.showLine,
               // scaleSpec: const common.SimpleOrdinalScaleSpec(),
@@ -213,7 +213,7 @@ class DChartBarO extends StatelessWidget {
                       labelAnchor: MethodCommon.tickLabelAnchor(
                           measureAxis?.labelAnchor),
                       tickLengthPx: measureAxis?.thickLength,
-                      lineStyle: domainAxis?.lineStyle.getRender(),
+                      lineStyle: domainAxis?.gridLineStyle.getRender(),
                     ),
               showAxisLine: measureAxis?.showLine,
               tickFormatterSpec: common.BasicNumericTickFormatterSpec(

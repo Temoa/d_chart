@@ -3,6 +3,7 @@ import 'dart:math';
 import 'package:community_charts_common/community_charts_common.dart' as common;
 import 'package:community_charts_flutter/community_charts_flutter.dart'
     as charts;
+import 'package:d_chart/draw_strategy/small_tick_gridline_draw_strategy.dart';
 import 'package:flutter/material.dart';
 
 import '../commons/axis.dart';
@@ -175,7 +176,7 @@ class DChartBarT extends StatelessWidget {
                   ? common.NoneRenderSpec(
                       axisLineStyle: domainAxis?.lineStyle.getRender(),
                     )
-                  : common.SmallTickRendererSpec(
+                  : SmallTickGridLineRendererSpec(
                       labelRotation: domainAxis?.labelRotation ?? 0,
                       minimumPaddingBetweenLabelsPx:
                           domainAxis?.minimumPaddingBetweenLabels ?? 0,
@@ -185,6 +186,7 @@ class DChartBarT extends StatelessWidget {
                       labelAnchor:
                           MethodCommon.tickLabelAnchor(domainAxis?.labelAnchor),
                       tickLengthPx: domainAxis?.thickLength,
+                      lineStyle: domainAxis?.gridLineStyle.getRender(),
                     ),
               showAxisLine: domainAxis?.showLine,
               // scaleSpec: const common.SimpleTimeScaleSpec(),
@@ -203,13 +205,14 @@ class DChartBarT extends StatelessWidget {
                   ? common.NoneRenderSpec(
                       axisLineStyle: measureAxis?.lineStyle.getRender(),
                     )
-                  : common.SmallTickRendererSpec(
+                  : SmallTickGridLineRendererSpec(
                       axisLineStyle: measureAxis?.lineStyle.getRender(),
                       labelStyle: measureAxis?.labelStyle.getRender(),
                       labelOffsetFromAxisPx: measureAxis?.gapAxisToLabel,
                       labelAnchor: MethodCommon.tickLabelAnchor(
                           measureAxis?.labelAnchor),
                       tickLengthPx: measureAxis?.thickLength,
+                      lineStyle: measureAxis?.gridLineStyle.getRender(),
                     ),
               showAxisLine: measureAxis?.showLine,
               tickFormatterSpec: common.BasicNumericTickFormatterSpec(
