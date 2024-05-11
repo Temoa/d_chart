@@ -1,8 +1,7 @@
 import 'dart:math';
 
 import 'package:community_charts_common/community_charts_common.dart' as common;
-import 'package:community_charts_flutter/community_charts_flutter.dart'
-    as charts;
+import 'package:community_charts_flutter/community_charts_flutter.dart' as charts;
 import 'package:d_chart/draw_strategy/small_tick_gridline_draw_strategy.dart';
 import 'package:flutter/material.dart';
 
@@ -91,6 +90,8 @@ class DChartBarO extends StatelessWidget {
   /// default: false
   final bool allowSliding;
 
+  final ValueChanged<OrdinalData>? onDataSelected;
+
   /// Ordinal Bar Chart
   const DChartBarO({
     super.key,
@@ -112,6 +113,7 @@ class DChartBarO extends StatelessWidget {
     this.flipVertical,
     this.layoutMargin,
     this.allowSliding = false,
+    this.onDataSelected,
   });
 
   @override
@@ -120,8 +122,7 @@ class DChartBarO extends StatelessWidget {
     return charts.BarChart(
       List.generate(groupList.length, (indexGroup) {
         OrdinalGroup group = groupList[indexGroup];
-        Color groupColor = group.color ??
-            Colors.primaries[Random().nextInt(Colors.primaries.length)];
+        Color groupColor = group.color ?? Colors.primaries[Random().nextInt(Colors.primaries.length)];
         return charts.Series<OrdinalData, String>(
           id: group.id,
           data: group.data,
@@ -155,17 +156,9 @@ class DChartBarO extends StatelessWidget {
               : (datum, index) {
                   return dashPattern!(group, datum, index);
                 },
-          labelAccessorFn: barLabelValue == null
-              ? null
-              : (datum, index) => barLabelValue!(group, datum, index),
-          insideLabelStyleAccessorFn: insideBarLabelStyle == null
-              ? null
-              : (datum, index) =>
-                  insideBarLabelStyle!(group, datum, index).getRender(),
-          outsideLabelStyleAccessorFn: outsideBarLabelStyle == null
-              ? null
-              : (datum, index) =>
-                  outsideBarLabelStyle!(group, datum, index).getRender(),
+          labelAccessorFn: barLabelValue == null ? null : (datum, index) => barLabelValue!(group, datum, index),
+          insideLabelStyleAccessorFn: insideBarLabelStyle == null ? null : (datum, index) => insideBarLabelStyle!(group, datum, index).getRender(),
+          outsideLabelStyleAccessorFn: outsideBarLabelStyle == null ? null : (datum, index) => outsideBarLabelStyle!(group, datum, index).getRender(),
         );
       }),
       vertical: vertical,
@@ -183,13 +176,11 @@ class DChartBarO extends StatelessWidget {
                     )
                   : SmallTickGridLineRendererSpec(
                       labelRotation: domainAxis?.labelRotation ?? 0,
-                      minimumPaddingBetweenLabelsPx:
-                          domainAxis?.minimumPaddingBetweenLabels ?? 0,
+                      minimumPaddingBetweenLabelsPx: domainAxis?.minimumPaddingBetweenLabels ?? 0,
                       axisLineStyle: domainAxis?.lineStyle.getRender(),
                       labelStyle: domainAxis?.labelStyle.getRender(),
                       labelOffsetFromAxisPx: domainAxis?.gapAxisToLabel,
-                      labelAnchor:
-                          MethodCommon.tickLabelAnchor(domainAxis?.labelAnchor),
+                      labelAnchor: MethodCommon.tickLabelAnchor(domainAxis?.labelAnchor),
                       tickLengthPx: domainAxis?.thickLength,
                       lineStyle: domainAxis?.gridLineStyle.getRender(),
                     ),
@@ -210,8 +201,7 @@ class DChartBarO extends StatelessWidget {
                       axisLineStyle: measureAxis?.lineStyle.getRender(),
                       labelStyle: measureAxis?.labelStyle.getRender(),
                       labelOffsetFromAxisPx: measureAxis?.gapAxisToLabel,
-                      labelAnchor: MethodCommon.tickLabelAnchor(
-                          measureAxis?.labelAnchor),
+                      labelAnchor: MethodCommon.tickLabelAnchor(measureAxis?.labelAnchor),
                       tickLengthPx: measureAxis?.thickLength,
                       lineStyle: domainAxis?.gridLineStyle.getRender(),
                     ),
@@ -230,6 +220,18 @@ class DChartBarO extends StatelessWidget {
         if (allowSliding) charts.SlidingViewport(),
         if (allowSliding) charts.PanAndZoomBehavior(),
         // charts.PanBehavior(),
+      ],
+      selectionModels: [
+        new charts.SelectionModelConfig(
+          type: charts.SelectionModelType.info,
+          updatedListener: (model) {
+            final selectedDatum = model.selectedDatum;
+            if (selectedDatum.length > 0) {
+              final data = model.selectedDatum.first.datum;
+              if (data is OrdinalData) onDataSelected?.call(data);
+            }
+          },
+        ),
       ],
     );
   }
