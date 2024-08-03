@@ -204,7 +204,7 @@ class DChartLineN extends StatelessWidget {
                       labelAnchor: MethodCommon.tickLabelAnchor(
                           measureAxis?.labelAnchor),
                       tickLengthPx: measureAxis?.thickLength,
-                      lineStyle: domainAxis?.gridLineStyle.getRender(),
+                      lineStyle: measureAxis?.gridLineStyle.getRender(),
                     ),
               showAxisLine: measureAxis?.showLine,
               tickFormatterSpec: common.BasicNumericTickFormatterSpec(
